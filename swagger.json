@@ -1,0 +1,223 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Challenge 4 Node",
+    "description": "Rocketseat - Challenge 4 Node",
+    "version": "1.0.0",
+    "contact": {
+      "email": "robertopedrosodesouza@gmail.com",
+      "name": "Roberto Pedroso de Souza",
+      "url": "https://github.com/roberto-souza/ignite-challenge-4-node"
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Resources of users"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create an user",
+        "description": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Find users",
+        "description": "List all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "description": "Admin user id",
+            "required": true,
+            "example": "89b6ad81-62cd-4d11-99f8-9e9b4594ac22",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not found | User is not an administrator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Find user",
+        "description": "Get user by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "User id",
+            "required": true,
+            "example": "89b6ad81-62cd-4d11-99f8-9e9b4594ac22",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Turn user administrator",
+        "description": "Turn user administrator by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "User id",
+            "required": true,
+            "example": "89b6ad81-62cd-4d11-99f8-9e9b4594ac22",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Find user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "89b6ad81-62cd-4d11-99f8-9e9b4594ac22"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@gmail.com"
+          },
+          "admin": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "Error": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Error message here"
+          }
+        }
+      }
+    }
+  }
+}
